@@ -10,11 +10,32 @@ Connection: Keep-Alive
 Accept-Encoding: gzip
 Content-Length: 130
 
-{"request":{"head":{"credentials":{"user":"api","pass":"wdfbjkh78326z3rejknfdeqcw89uz3r2adsjoi"},"requesttype":"authentication"}}}"" */
+{"request":{"head":{"credentials":{"user":"api","pass":"wdfbjkh78326z3rejknfdeqcw89uz3r2adsjoi"},"requesttype":"authentication"}}}""
+
+*/
 
 
 
 function getToken(){
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState != 4) return;
+
+    if (this.status == 200) {
+        console.log(this.responseText);
+        var result = JSON.parse(this.responseText);
+        getData(result['result']['head']['credentials']['token']);
+        // we get the returned data
+    }
+
+      // end of state change: it can be after some time (async)
+  };
+  xhr.open("POST", 'http://ewnt.schneidereit-trac.com/api', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify({"request":{"head":{"credentials":{"user":"api","pass":"wdfbjkh78326z3rejknfdeqcw89uz3r2adsjoi"},"requesttype":"authentication"}}}));
+}
+
+function getData(token){
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState != 4) return;
@@ -26,9 +47,12 @@ function getToken(){
         // we get the returned data
     }
 
-      // end of state change: it can be after some time (async)
-  };
-  xhr.open("POST", 'http://ewnt.schneidereit-trac.com/api', true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.send(JSON.stringify({"request":{"head":{"credentials":{"user":"api","pass":"wdfbjkh78326z3rejknfdeqcw89uz3r2adsjoi"},"requesttype":"authentication"}}}));
+    // end of state change: it can be after some time (async)
+};
+
+xhr.open("POST", 'http://ewnt.schneidereit-trac.com/api', true);
+xhr.setRequestHeader('Content-Type', 'application/json');
+let request = JSON.stringify({"request":{"head":{"credentials":{"token":token},"requesttype":"getRaum","api":"0.0.1"},"body":{"parameter":{"raumnr":"5015"}}}});
+console.log(request);
+xhr.send(request);
 }

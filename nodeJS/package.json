@@ -1,0 +1,17 @@
+{
+  "name": "washing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2",
+    "request-promise-any": "^1.0.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Martin Stamm",
+  "license": "Beerware"
+}

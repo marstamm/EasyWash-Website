@@ -8,6 +8,27 @@ let http = require('http');
 let https = require('https');
 let request = require('request-promise');
 
+module.exports = {
+  getData: async function getData() {
+
+    //Get Login Data
+    let token, data;
+    await (httpPostRequest(
+        API_URL,
+        '{"request":{"head":{"credentials":{"user":"api","pass":"wdfbjkh78326z3rejknfdeqcw89uz3r2adsjoi"},"requesttype":"authentication"}}}'
+      )
+      .then(function (body){
+        token = JSON.parse(body)['result']['head']['credentials']['token']
+      }));
+
+    //Get Data
+    //Token is not imedialtely valid
+    data = await machineJSON(token);
+    return data;
+
+  }
+}
+
 
 function wait (timeout) {
   return new Promise((resolve) => {
@@ -50,22 +71,4 @@ async function machineJSON(token) {
     }
   }
   throw "Failed after " + MAX_RETRIES + "tries";
-}
-
-async function getData() {
-
-  //Get Login Data
-  let token, data;
-  await (httpPostRequest(
-      API_URL,
-      '{"request":{"head":{"credentials":{"user":"api","pass":"wdfbjkh78326z3rejknfdeqcw89uz3r2adsjoi"},"requesttype":"authentication"}}}'
-    )
-    .then(function (body){
-      token = JSON.parse(body)['result']['head']['credentials']['token']
-    }));
-
-  //Get Data
-  //Token is not imedialtely valid
-  data = await machineJSON(token);
-  return data;
 }

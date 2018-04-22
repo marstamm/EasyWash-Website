@@ -52,7 +52,7 @@ async function machineJSON(token) {
   throw "Failed after " + MAX_RETRIES + "tries";
 }
 
-async function main() {
+async function getData() {
 
   //Get Login Data
   let token, data;
@@ -67,5 +67,5 @@ async function main() {
   //Get Data
   //Token is not imedialtely valid
   data = await machineJSON(token);
-
+  return data;
 }

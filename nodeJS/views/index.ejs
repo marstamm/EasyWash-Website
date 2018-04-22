@@ -8,6 +8,47 @@
   <script src="/semantic/dist/semantic.min.js"></script>
 </head>
 <body>
-  <div class='ui vertical stripe segment' >Content goes here </div>
-  <%= JSON.stringify(data) %>
+  <h1 class="ui header">Waschmaschienen</h1>
+  <br>
+  <div class="ui centered equal width grid">
+    <div style="width: 0px; height: 0px;"></div>
+    <% for (i in waschmaschienen) { %>
+      <%  if (waschmaschienen[i]['waschgang'] == 0) {%>
+        <div class="ui message green">
+          <h2 class="ui header">Waschmaschine <%= waschmaschienen[i]['mnr'] %></h2>
+          Frei!
+        </div>
+      <% } else { %>
+        <div class="ui message red">
+          <h2 class="ui header">Waschmaschine <%= waschmaschienen[i]['mnr'] %></h2>
+
+          Restzeit: <%= waschmaschienen[i]['restzeit'] %> Minuten <br>
+          Programm: <%= waschmaschienen[i]['solltemperatur'] %>
+        </div>
+        <% } %>
+      <% } %>
+      <div style="width: 0px; height: 0px;"></div>
+  </div>
+
+  <h1 class="ui header">Trockner</h1>
+  <br>
+  <div class="ui centered equal width grid">
+    <div style="width: 0px; height: 0px;"></div>
+    <% for (i in trockner) { %>
+      <%  if (trockner[i]['waschgang'] == 0) {%>
+        <div class="ui message green">
+          <h2 class="ui header">Trockner <%= trockner[i]['mnr'] %></h2>
+          Frei!
+        </div>
+      <% } else { %>
+        <div class="ui message red">
+          <h2 class="ui header">Trockner <%= trockner[i]['mnr'] %></h2>
+
+          Restzeit: <%= trockner[i]['restzeit'] %> Minuten <br>
+          Programm: <%= trockner[i]['solltemperatur'] %>
+        </div>
+        <% } %>
+      <% } %>
+      <div style="width: 0px; height: 0px;"></div>
+  </div>
 </body>

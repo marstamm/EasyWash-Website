@@ -11,8 +11,16 @@ app.set('view engine', 'ejs')
 app.get('/', async function (req, res) {
   json = await api.getData();
   console.log(json);
-
-  res.render('index', {data: json})
+  let machines = json['result']['body']['objekt']['raum']['maschinen']
+  let trockner = []
+  let waschmaschienen = []
+  for (i in machines) {
+    if (machines[i]['typ'] == 'Waschmaschine')
+      waschmaschienen.push(machines[i])
+    if (machines[i]['typ'] == 'Trockner')
+      trockner.push(machines[i])
+  }
+  res.render('index', {waschmaschienen: waschmaschienen, trockner: trockner})
 })
 
 app.listen(3000, function () {

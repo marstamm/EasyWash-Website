@@ -9,7 +9,30 @@ const API_URL = "https://fjgqer7ard.execute-api.eu-central-1.amazonaws.com/defau
 const API_ARG = "roomId"
 
 
+function Washer(props){
+  if(props.status['waschgang'] == 0)
+  {
+    //Machine not in use
+    return(
+      <div class="ui message green">
+      <h2 class="ui header">Waschmaschine {props.status['mnr']}</h2>
+            Frei
+      </div>
+          )
+  }
+  else
+  {
+    return(
+      <div class="ui message red">
+      <h2 class="ui header">Waschmaschine {props.status['mnr']}</h2>
+        Restzeit: {props.status['restzeit']} Minuten <br />
+        Programm: {props.status['solltemperatur']}°
+      </div>
+          )
 
+  }
+
+}
 
 class RoomForm extends Component
 {
@@ -85,7 +108,18 @@ class Room extends Component {
     )
   }
 
-
+  renderWashers(washers){
+    var renderedMachienes = []
+    for (let i in washers) {
+      renderedMachienes.push(<Washer status={washers[i]} />)
+    }
+    return (
+      <div class="ui centered equal width grid">
+        <div style={{width: '0px', height: '0px', padding: 0}}>{/* Fix some alignment stuff */}</div>
+        {renderedMachienes}
+        <div style={{width: '0px', height: '0px', padding: 0}}></div>
+      </div>)
+  }
 
   render() {
     console.log("rendering Room")
@@ -96,7 +130,29 @@ class Room extends Component {
       return (<div> Loading... </div>)
     }
     else{
-      return (<div>{JSON.stringify(this.state.roomData)}</div>)
+
+      //Clean Data
+      let machines = this.state.roomData['data']['result']['body']['objekt']['raum']['maschinen']
+      let dryers = []
+      let washers = []
+      for (let i in machines) {
+        if (machines[i]['typ'] == 'Waschmaschine')
+          washers.push(machines[i])
+        if (machines[i]['typ'] == 'Trockner')
+          dryers.push(machines[i])
+      }
+
+
+      return (
+        <div class="room">
+          <h1 class="ui centered header first">Waschmaschinen</h1>
+          <br />
+          <div class="ui centered equal width grid">
+
+          {this.renderWashers(washers)}
+          </div>
+        </div>
+        )
     }
   }
 

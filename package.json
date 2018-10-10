@@ -1,21 +1,16 @@
 {
-  "name": "washing",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "wash_react",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "aws-serverless-express": "^3.2.0",
-    "ejs": "^2.5.9",
-    "express": "^4.16.3",
-    "request": "^2.85.0",
-    "request-promise": "^4.2.2"
-  },
-  "devDependencies": {
-    "serverless-domain-manager": "^2.3.6"
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
+    "react-scripts": "1.1.5"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Martin Stamm",
-  "license": "Beerware"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
 }

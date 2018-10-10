@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {Washer, Dryer} from './machienes.js';
 
 const axios = require('axios');
 let request = require('request-promise');
@@ -9,34 +10,8 @@ const API_URL = "https://fjgqer7ard.execute-api.eu-central-1.amazonaws.com/defau
 const API_ARG = "roomId"
 
 
-function Washer(props){
-  if(props.status['waschgang'] == 0)
-  {
-    //Machine not in use
-    return(
-      <div class="ui message green">
-      <h2 class="ui header">Waschmaschine {props.status['mnr']}</h2>
-            Frei
-      </div>
-          )
-  }
-  else
-  {
-    return(
-      <div class="ui message red">
-      <h2 class="ui header">Waschmaschine {props.status['mnr']}</h2>
-        Restzeit: {props.status['restzeit']} Minuten <br />
-        Programm: {props.status['solltemperatur']}°
-      </div>
-          )
-
-  }
-
-}
-
 class RoomForm extends Component
 {
-  // TODO: Fetch data after submitting RoomNbr
   constructor(props){
     super(props)
     this.state = {roomNr: ''}
@@ -75,6 +50,14 @@ class Room extends Component {
     //        2 - finished
     // Could probably be done nicer, we just have to deal with this for now
     this.state = {roomData: null}
+  }
+
+  componentDidUpdate(prevProps) {
+    if(this.props.roomNr != prevProps.roomNr) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+    {
+           this.setState({roomData: null});
+           this.componentDidMount();
+    }
   }
 
   componentDidMount() {
@@ -121,6 +104,19 @@ class Room extends Component {
       </div>)
   }
 
+  renderDryers(dryers){
+    var renderedMachienes = []
+    for (let i in dryers) {
+      renderedMachienes.push(<Dryer status={dryers[i]} />)
+    }
+    return (
+      <div class="ui centered equal width grid">
+        <div style={{width: '0px', height: '0px', padding: 0}}>{/* Fix some alignment stuff */}</div>
+        {renderedMachienes}
+        <div style={{width: '0px', height: '0px', padding: 0}}></div>
+      </div>)
+  }
+
   render() {
     console.log("rendering Room")
     console.log(this.state.roomData)
@@ -151,6 +147,12 @@ class Room extends Component {
 
           {this.renderWashers(washers)}
           </div>
+
+          <div class="ui divider"></div>
+          <h1 class="ui centered header">Trockner</h1>
+          <br />
+
+          {this.renderDryers(dryers)}
         </div>
         )
     }
@@ -163,11 +165,7 @@ class Container extends Component {
 
   constructor(props){
     super(props)
-    //Phases: 0 - Input of ROOM
-    //        1 - Fetching data
-    //        2 - finished
-    // Could probably be done nicer, we just have to deal with this for now
-    this.state = {phase: 0}
+    this.state = {}
   }
 
   //Arrow Function so 'this' is bound
@@ -192,10 +190,7 @@ class Container extends Component {
         </div>
       )
     }
-
 }
-
-
 
 
 export default Container;

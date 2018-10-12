@@ -34,8 +34,14 @@ class RoomForm extends Component
   {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input type="number" onChange={this.handleChange} />
-        <input type="submit" />
+        <div class="ui icon input">
+          <input type="number" placeholder="5015" onChange={this.handleChange}/>
+          <i class="search icon"></i>
+        </div>
+
+        <button class="ui button" onclick={this.handleSubmit}>
+          Go!
+        </button>
       </form>
     )
   }
@@ -53,7 +59,7 @@ class Room extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.roomNr != prevProps.roomNr) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+    if(this.props.roomNr != prevProps.roomNr) // Check if a new Room is selected
     {
            this.setState({roomData: null});
            this.componentDidMount();
@@ -117,13 +123,28 @@ class Room extends Component {
       </div>)
   }
 
+
+  renderRoomInfo(){
+    let roomInfo = this.state.roomData['data']['result']['body']['objekt']
+    return(
+      <div>
+        <h1 class="ui centered header first">{roomInfo.bezeichnung}</h1>
+        <p style={{textAlign: 'center'}}>{roomInfo.strasse} {roomInfo.hausnr}, {roomInfo.plz} {roomInfo.ort}</p>
+      </div>
+    )
+  }
+
   render() {
     console.log("rendering Room")
     console.log(this.state.roomData)
     if(this.state.roomData === null)
     {
       console.log("Loading")
-      return (<div> Loading... </div>)
+      return (
+        <div class="ui active dimmer">
+          <div class="ui text loader">Loading</div>
+          <p></p>
+        </div>)
     }
     else{
 
@@ -141,7 +162,8 @@ class Room extends Component {
 
       return (
         <div class="room">
-          <h1 class="ui centered header first">Waschmaschinen</h1>
+          {this.renderRoomInfo()}
+          <h2 class="ui centered header first">Waschmaschinen</h2>
           <br />
           <div class="ui centered equal width grid">
 
@@ -149,7 +171,7 @@ class Room extends Component {
           </div>
 
           <div class="ui divider"></div>
-          <h1 class="ui centered header">Trockner</h1>
+          <h2 class="ui centered header">Trockner</h2>
           <br />
 
           {this.renderDryers(dryers)}

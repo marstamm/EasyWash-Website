@@ -9,6 +9,13 @@ let request = require('request-promise');
 const API_URL = "https://fjgqer7ard.execute-api.eu-central-1.amazonaws.com/default/easywash"
 const API_ARG = "roomId"
 
+function wait (timeout) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve()
+      }, timeout)
+    })
+  }
 
 class RoomForm extends Component
 {
@@ -71,6 +78,7 @@ class Room extends Component {
       externalData => {
         this._asyncRequest = null;
         this.setState({roomData: externalData});
+        this.startTimer();
       }
     );
   }
@@ -96,6 +104,13 @@ class Room extends Component {
       }
     )
   }
+
+  async startTimer () {
+      //Check again in a minute
+      console.log("startTimeout")
+      await wait(60000);
+      this.componentDidMount()
+    };
 
   renderWashers(washers){
     var renderedMachienes = []
@@ -133,6 +148,7 @@ class Room extends Component {
       </div>
     )
   }
+
 
   render() {
     console.log("rendering Room")

@@ -21,7 +21,7 @@ class RoomForm extends Component
 {
   constructor(props){
     super(props)
-    this.state = {roomNr: ''}
+    this.state = {roomNr: 5015}
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -43,10 +43,10 @@ class RoomForm extends Component
       <form onSubmit={this.handleSubmit}>
         <div class="ui icon input">
           <input type="number" placeholder="5015" onChange={this.handleChange}/>
-          <i class="search icon"></i>
+          <i class="search icon" />
         </div>
 
-        <button class="ui button" onclick={this.handleSubmit}>
+        <button class="ui button" onClick={this.handleSubmit}>
           Go!
         </button>
       </form>
@@ -195,7 +195,6 @@ class Room extends Component {
         )
     }
   }
-
 }
 
 

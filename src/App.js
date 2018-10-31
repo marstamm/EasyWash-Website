@@ -4,7 +4,7 @@ import './App.css';
 import {Washer, Dryer} from './machienes.js';
 
 const axios = require('axios');
-let request = require('request-promise');
+const request = require('request-promise');
 
 const API_URL = "https://fjgqer7ard.execute-api.eu-central-1.amazonaws.com/default/easywash"
 const API_ARG = "roomId"
@@ -21,7 +21,7 @@ class RoomForm extends Component
 {
   constructor(props){
     super(props)
-    this.state = {roomNr: 5015}
+    this.state = {roomNr: this.props.defaultValue ? this.props.defaultValue : 5015}
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -42,7 +42,7 @@ class RoomForm extends Component
     return (
       <form onSubmit={this.handleSubmit}>
         <div class="ui icon input">
-          <input type="number" placeholder="5015" onChange={this.handleChange}/>
+          <input type="number" placeholder={this.state.roomNr} onChange={this.handleChange}/>
           <i class="search icon" />
         </div>
 
@@ -58,10 +58,6 @@ class RoomForm extends Component
 class Room extends Component {
   constructor(props){
     super(props)
-    //Phases: 0 - Input of ROOM
-    //        1 - Fetching data
-    //        2 - finished
-    // Could probably be done nicer, we just have to deal with this for now
     this.state = {roomData: null}
   }
 
@@ -202,12 +198,13 @@ class Container extends Component {
 
   constructor(props){
     super(props)
-    this.state = {}
+    this.state = {roomNr: parseInt(localStorage.getItem("roomNr"))}
   }
 
   //Arrow Function so 'this' is bound
   handleRoomInput = (value) => {
     console.log('Room Component value:' + value)
+    localStorage.setItem("roomNr", value)
     this.setState({roomNr: value})
   }
 
@@ -222,7 +219,7 @@ class Container extends Component {
   render() {
       return (
         <div>
-          <RoomForm onRoomInput={this.handleRoomInput}/>
+          <RoomForm onRoomInput={this.handleRoomInput} defaultValue={this.state.roomNr}/>
           {this.renderRoomInfo()}
         </div>
       )
